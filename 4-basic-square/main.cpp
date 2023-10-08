@@ -56,6 +56,7 @@ int main(void)
     glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
 
     // Creating shader stages
+    // More details at: https://antongerdelan.net/opengl/shaders.html
     unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
     glCompileShader(vertexShader);
