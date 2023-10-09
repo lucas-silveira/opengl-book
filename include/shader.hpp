@@ -3,6 +3,9 @@
 
 #include <glad/gl.h>
 #include <string>
+#include <fstream>
+#include <sstream>
+#include <iostream>
 
 class Shader
 {
@@ -12,8 +15,11 @@ class Shader
 
     Shader(const char* vertexPath, const char* fragmentPath);
 
-    // Activate the shader
+    // Activate the program
     void use();
+
+    // Delete the program
+    void remove();
 
     // Utility uniform functions
     void setBool(const std::string &name, bool value) const;
