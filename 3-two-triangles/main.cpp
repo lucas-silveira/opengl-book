@@ -76,7 +76,8 @@ int main(void)
         -0.0f, -0.5f, 0.0f,  // right
         -0.45f, 0.5f, 0.0f   // top 
 
-        // Second triangle (First approach)
+        // First approach
+        // Second triangle
         // 0.0f, -0.5f, 0.0f,  // left
         // 0.9f, -0.5f, 0.0f,  // right
         // 0.45f, 0.5f, 0.0f   // top 
@@ -125,7 +126,10 @@ int main(void)
         glUseProgram(shaderProgram);
         glBindVertexArray(VAOs[0]);
         glDrawArrays(GL_TRIANGLES, 0, 3);
-        // glDrawArrays(GL_TRIANGLES, 0, 6); // 6 = 2x3 vertices (two triangles) (First approach)
+        
+        // First approach
+        // glDrawArrays(GL_TRIANGLES, 0, 6); // 6 = 2x3 vertices (two triangles)
+
         glBindVertexArray(0);
 
         // Drawing second triangle

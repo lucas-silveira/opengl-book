@@ -76,7 +76,16 @@ int main(void)
     glDeleteShader(fragmentShader);
 
     // Triangle vertices
-    float verticesPos[] = {
+
+    // First approach
+    // float vertices[] = {
+    //     // x     y     z     r     g      b
+    //     -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, // left
+    //     0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f,  // right
+    //     0.0f, 0.5f, 0.0f, 0.0f, 0.0f, 1.0f,   // top
+    // };
+
+    float vertices[] = {
         -0.5f, -0.5f, 0.0f, // left
         0.5f, -0.5f, 0.0f,  // right
         0.0f, 0.5f, 0.0f,   // top
@@ -88,25 +97,23 @@ int main(void)
         0.0f, 0.0f, 1.0f  // top
     };
 
-    unsigned int VBOVerticesPos;
-    glGenBuffers(1, &VBOVerticesPos);
-
-    unsigned int VBOColors;
-    glGenBuffers(1, &VBOColors);
-
-    unsigned int VAO;
+    unsigned int VBOs[2], VAO; // we can also generate multiple VAOs or buffers at the same time
+    glGenBuffers(2, VBOs);
     glGenVertexArrays(1, &VAO);
 
     glBindVertexArray(VAO);
-
-    glBindBuffer(GL_ARRAY_BUFFER, VBOVerticesPos);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(verticesPos), verticesPos, GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, VBOs[0]);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3*sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
     // Copying the colors array into the buffer
-    glBindBuffer(GL_ARRAY_BUFFER, VBOColors);
+    glBindBuffer(GL_ARRAY_BUFFER, VBOs[1]);
     glBufferData(GL_ARRAY_BUFFER, sizeof(colors), colors, GL_STATIC_DRAW);
-    // Set the vertex attributes pointers (this tells to OpenGL how to handle vertex data in vertex shader)
+
+    // First approach
+    // glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6*sizeof(float), (void*)(3 * sizeof(float)));
+    // glEnableVertexAttribArray(1);
+
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3*sizeof(float), (void*)0); // here we specify the color attribute (which is at location 1)
     glEnableVertexAttribArray(1); // this is the color layout location in the vertexShaderSource
 
@@ -134,8 +141,7 @@ int main(void)
     }
 
     glDeleteVertexArrays(1, &VAO);
-    glDeleteBuffers(1, &VBOVerticesPos);
-    glDeleteBuffers(1, &VBOColors);
+    glDeleteBuffers(2, VBOs);
     glDeleteProgram(shaderProgram);
 
     glfwTerminate();
