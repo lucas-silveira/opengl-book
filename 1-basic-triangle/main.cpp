@@ -5,7 +5,7 @@ const unsigned int SCREEN_WIDTH = 800;
 const unsigned int SCREEN_HEIGHT = 600;
 
 const char* vertexShaderSource = "#version 330 core\n"
-    // Defining the vertex attribute as well as its local position within Vertex shader
+    // Defining the vertex attribute as well as its local position within Vertex Shader
     "layout (location = 0) in vec3 aPos;\n" // aPos attribute it's at location 0
     "void main()\n"
     "{\n"
@@ -55,7 +55,7 @@ int main(void)
     gladLoadGL(glfwGetProcAddress);
     glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
 
-    // Creating shader stages
+    // Creating Shader stages
     // More details at: https://antongerdelan.net/opengl/shaders.html
     unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
@@ -81,7 +81,7 @@ int main(void)
         0.0f, 0.5f, 0.0f,   // top
     };
 
-    // Creating a Vertex Buffer Object to store our vertices in the GPU's memory
+    // Creating a Vertex Buffer Object to store our vertices into the GPU's memory
     // More details at: https://antongerdelan.net/opengl/vertexbuffers.html
     unsigned int VBO;
     glGenBuffers(1, &VBO);

@@ -5,7 +5,7 @@ const unsigned int SCREEN_WIDTH = 800;
 const unsigned int SCREEN_HEIGHT = 600;
 
 const char* vertexShaderSource = "#version 330 core\n"
-    // Defining the vertex attribute as well as its local position within Vertex shader
+    // Defining the vertex attributes as well as its local positions within Vertex Shader
     "layout (location = 0) in vec3 aPos;\n" // aPos attribute it's at location 0
     "layout (location = 1) in vec3 aColor;\n" // aColor attribute it's at location 1
     "out vec3 color;\n"
@@ -59,8 +59,6 @@ int main(void)
     gladLoadGL(glfwGetProcAddress);
     glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
 
-    // Creating shader stages
-    // More details at: https://antongerdelan.net/opengl/shaders.html
     unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
     glCompileShader(vertexShader);
@@ -69,7 +67,6 @@ int main(void)
     glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
     glCompileShader(fragmentShader);
 
-    // Linking shader stages
     unsigned int shaderProgram = glCreateProgram();
     glAttachShader(shaderProgram, vertexShader);
     glAttachShader(shaderProgram, fragmentShader);
@@ -84,34 +81,28 @@ int main(void)
         0.5f, -0.5f, 0.0f,  // right
         0.0f, 0.5f, 0.0f,   // top
     };
+    // Triangle colors
     float colors[] = {
-        1.0f, 0.0f, 0.0f,
-        0.0f, 1.0f, 0.0f,
-        0.0f, 0.0f, 1.0f
+        1.0f, 0.0f, 0.0f, // left
+        0.0f, 1.0f, 0.0f, // right
+        0.0f, 0.0f, 1.0f  // top
     };
 
-    // Creating a Vertex Buffer Object to store our vertices in the GPU's memory
-    // More details at: https://antongerdelan.net/opengl/vertexbuffers.html
     unsigned int VBOVerticesPos;
     glGenBuffers(1, &VBOVerticesPos);
 
-    // Creating a Vertex Buffer Object to store the colors
     unsigned int VBOColors;
     glGenBuffers(1, &VBOColors);
 
-    /* Creating a Vertex Array Object to reuse the objects state */
     unsigned int VAO;
     glGenVertexArrays(1, &VAO);
 
-    // Store the VBO state in the VAO
-    // ------------------------------
     glBindVertexArray(VAO);
-    // Copying the vertices array into the buffer
+
     glBindBuffer(GL_ARRAY_BUFFER, VBOVerticesPos);
     glBufferData(GL_ARRAY_BUFFER, sizeof(verticesPos), verticesPos, GL_STATIC_DRAW);
-    // Set the vertex attributes pointers (this tells to OpenGL how to handle vertex data in vertex shader)
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3*sizeof(float), (void*)0); // here we specify the aPos attribute (which is at location 0)
-    glEnableVertexAttribArray(0); // this is the aPos layout location in the vertexShaderSource
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3*sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
     // Copying the colors array into the buffer
     glBindBuffer(GL_ARRAY_BUFFER, VBOColors);
     glBufferData(GL_ARRAY_BUFFER, sizeof(colors), colors, GL_STATIC_DRAW);
@@ -119,7 +110,6 @@ int main(void)
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3*sizeof(float), (void*)0); // here we specify the color attribute (which is at location 1)
     glEnableVertexAttribArray(1); // this is the color layout location in the vertexShaderSource
 
-    // Unbinding objects from OpenGL context (for most cases it's not necessary)
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 
@@ -137,12 +127,12 @@ int main(void)
         glUseProgram(shaderProgram);
         glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLES, 0, 3);
-        glBindVertexArray(0); // no need to unbind it every time
+        glBindVertexArray(0);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
-    // Optionally de-allocate the resources once they've outlived their purpose
+
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBOVerticesPos);
     glDeleteBuffers(1, &VBOColors);

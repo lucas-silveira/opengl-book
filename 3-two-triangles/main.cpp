@@ -5,8 +5,7 @@ const unsigned int SCREEN_WIDTH = 800;
 const unsigned int SCREEN_HEIGHT = 600;
 
 const char* vertexShaderSource = "#version 330 core\n"
-    // Defining the vertex attribute as well as its local position within Vertex shader
-    "layout (location = 0) in vec3 aPos;\n" // aPos attribute it's at location 0
+    "layout (location = 0) in vec3 aPos;\n"
     "void main()\n"
     "{\n"
     "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
@@ -55,8 +54,6 @@ int main(void)
     gladLoadGL(glfwGetProcAddress);
     glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
 
-    // Creating shader stages
-    // More details at: https://antongerdelan.net/opengl/shaders.html
     unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
     glCompileShader(vertexShader);
@@ -65,7 +62,6 @@ int main(void)
     glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
     glCompileShader(fragmentShader);
 
-    // Linking shader stages
     unsigned int shaderProgram = glCreateProgram();
     glAttachShader(shaderProgram, vertexShader);
     glAttachShader(shaderProgram, fragmentShader);
@@ -74,33 +70,44 @@ int main(void)
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
 
-    // Triangle vertices
-    float vertices[] = {
-        -0.5f, -0.5f, 0.0f, // left
-        0.5f, -0.5f, 0.0f,  // right
-        0.0f, 0.5f, 0.0f,   // top
+    // First triangle
+    float vertices1[] = {
+        -0.9f, -0.5f, 0.0f,  // left 
+        -0.0f, -0.5f, 0.0f,  // right
+        -0.45f, 0.5f, 0.0f   // top 
+
+        // Second triangle (First approach)
+        // 0.0f, -0.5f, 0.0f,  // left
+        // 0.9f, -0.5f, 0.0f,  // right
+        // 0.45f, 0.5f, 0.0f   // top 
     };
 
-    // Creating a Vertex Buffer Object to store our vertices in the GPU's memory
-    // More details at: https://antongerdelan.net/opengl/vertexbuffers.html
-    unsigned int VBO;
-    glGenBuffers(1, &VBO);
+    // Second triangle
+    float vertices2[] = {
+        0.0f, -0.5f, 0.0f,  // left 
+        0.9f, -0.5f, 0.0f,  // right
+        0.45f, 0.5f, 0.0f  // top 
+    };
 
-    /* Creating a Vertex Array Object to reuse the objects state */
-    unsigned int VAO;
-    glGenVertexArrays(1, &VAO);
+    unsigned int VBOs[2], VAOs[2]; // we can also generate multiple VAOs or buffers at the same time
+    glGenBuffers(2, VBOs);
+    glGenVertexArrays(2, VAOs);
 
-    // Store the VBO state in the VAO
-    // ------------------------------
-    glBindVertexArray(VAO);
-    // Copying the vertices array into the buffer
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-    // Set the vertex attributes pointers (this tells to OpenGL how to handle vertex data in vertex shader)
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3*sizeof(float), (void*)0); // here we specify the aPos attribute (which is at location 0)
-    glEnableVertexAttribArray(0); // this is the aPos layout location in the vertexShaderSource
+    // First triangle setup
+    glBindVertexArray(VAOs[0]);
+    glBindBuffer(GL_ARRAY_BUFFER, VBOs[0]);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices1), vertices1, GL_STATIC_DRAW);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3*sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindVertexArray(0);
 
-    // Unbinding objects from OpenGL context (for most cases it's not necessary)
+    // Second triangle setup
+    glBindVertexArray(VAOs[1]);
+    glBindBuffer(GL_ARRAY_BUFFER, VBOs[1]);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices2), vertices2, GL_STATIC_DRAW);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3*sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 
@@ -114,18 +121,24 @@ int main(void)
         glClearColor(0.f, 0.f, 0.f, 0.f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        // Drawing
+        // Drawing first triangle
         glUseProgram(shaderProgram);
-        glBindVertexArray(VAO);
+        glBindVertexArray(VAOs[0]);
         glDrawArrays(GL_TRIANGLES, 0, 3);
-        glBindVertexArray(0); // no need to unbind it every time
+        // glDrawArrays(GL_TRIANGLES, 0, 6); // 6 = 2x3 vertices (two triangles) (First approach)
+        glBindVertexArray(0);
+
+        // Drawing second triangle
+        glUseProgram(shaderProgram);
+        glBindVertexArray(VAOs[1]);
+        glDrawArrays(GL_TRIANGLES, 0, 3);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
-    // Optionally de-allocate the resources once they've outlived their purpose
-    glDeleteVertexArrays(1, &VAO);
-    glDeleteBuffers(1, &VBO);
+
+    glDeleteVertexArrays(2, VAOs);
+    glDeleteBuffers(2, VBOs);
     glDeleteProgram(shaderProgram);
 
     glfwTerminate();

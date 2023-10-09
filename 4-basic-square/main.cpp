@@ -5,8 +5,7 @@ const unsigned int SCREEN_WIDTH = 800;
 const unsigned int SCREEN_HEIGHT = 600;
 
 const char* vertexShaderSource = "#version 330 core\n"
-    // Defining the vertex attribute as well as its local position within Vertex shader
-    "layout (location = 0) in vec3 aPos;\n" // aPos attribute it's at location 0
+    "layout (location = 0) in vec3 aPos;\n"
     "void main()\n"
     "{\n"
     "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
@@ -55,8 +54,6 @@ int main(void)
     gladLoadGL(glfwGetProcAddress);
     glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
 
-    // Creating shader stages
-    // More details at: https://antongerdelan.net/opengl/shaders.html
     unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
     glCompileShader(vertexShader);
@@ -65,7 +62,6 @@ int main(void)
     glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
     glCompileShader(fragmentShader);
 
-    // Linking shader stages
     unsigned int shaderProgram = glCreateProgram();
     glAttachShader(shaderProgram, vertexShader);
     glAttachShader(shaderProgram, fragmentShader);
@@ -84,10 +80,9 @@ int main(void)
     // Indices avoid to have duplicated vertices
     unsigned int indices[] = {
         0, 1, 3, // first triangle
-        1, 2, 3 // second triangle
+        1, 2, 3  // second triangle
     };
 
-    // Creating a Vertex Buffer Object to store our vertices in the GPU's memory
     unsigned int VBO;
     glGenBuffers(1, &VBO);
 
@@ -95,24 +90,19 @@ int main(void)
     unsigned int EBO;
     glGenBuffers(1, &EBO);
 
-    /* Creating a Vertex Array Object to reuse the objects state */
     unsigned int VAO;
     glGenVertexArrays(1, &VAO);
 
-    // Store the VBO state in the VAO
-    // ------------------------------
     glBindVertexArray(VAO);
-    // Copying the vertices array into the buffer
+
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
     // Copying the indexes into the buffer
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-    // Set the vertex attributes pointers (this tells to OpenGL how to handle vertex data in vertex shader)
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3*sizeof(float), (void*)0); // here we specify the aPos attribute (which is at location 0)
-    glEnableVertexAttribArray(0); // this is the layout location of the vertexShaderSource
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3*sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
 
-    // Unbinding objects from OpenGL context (for most cases it's not necessary)
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     // We cannot unbind the EBO while VAO is active
     // glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
@@ -132,12 +122,12 @@ int main(void)
         glUseProgram(shaderProgram);
         glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-        glBindVertexArray(0); // no need to unbind it every time 
+        glBindVertexArray(0);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
-    // Optionally de-allocate the resources once they've outlived their purpose
+
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
     glDeleteProgram(shaderProgram);
