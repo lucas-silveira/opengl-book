@@ -42,7 +42,7 @@ int main(void)
     gladLoadGL(glfwGetProcAddress);
     glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
 
-    Shader shaderProgram("../shaders/shader.vs", "../shaders/shader.fs");
+    Shader shaderProgram("shader.vs", "shader.fs");
 
     // Triangle vertices
     float vertices[] = {
