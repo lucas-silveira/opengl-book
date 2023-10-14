@@ -47,7 +47,7 @@ int main(void)
     gladLoadGL(glfwGetProcAddress);
     glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
 
-    Shader shaderProgram("shader.vs", "shader.fs");
+    Shader shaderProgram("shader.vert", "shader.frag");
 
     float vertices[] = {
         // positions        // colors           // texture coords
@@ -163,7 +163,7 @@ int main(void)
         trans = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(0.f, 0.f, 1.0f));
 
         // Get matrix's uniform location and set matrix
-        unsigned int transformLoc = glGetUniformLocation(shaderProgram.ID, "transform");
+        int transformLoc = glGetUniformLocation(shaderProgram.ID, "transform");
         glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
         
         glBindVertexArray(VAO);

@@ -157,28 +157,24 @@ int main(void)
 
         glBindVertexArray(VAO);
 
-        // Create first transformations
-        glm::mat4 trans = glm::mat4(1.f);
-        trans = glm::translate(trans, glm::vec3(0.5f, -0.5f, 0.f));
-        trans = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(0.f, 0.f, 1.0f));
+        /* Transformation matrices */
+        // Model matrix
+        glm::mat4 model = glm::mat4(1.f);
+        model = glm::rotate(model, glm::radians(-55.f), glm::vec3(1.f, 0.f, 0.f));
+        int modelLoc = glGetUniformLocation(shaderProgram.ID, "model");
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+        // View matrix
+        glm::mat4 view = glm::mat4(1.f);
+        view = glm::translate(view, glm::vec3(0.f, 0.f, -3.f)); // we translate the scene in the reverse direction
+        int viewLoc = glGetUniformLocation(shaderProgram.ID, "view");
+        glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
+        // Projection matrix
+        glm::mat4 projection;
+        projection = glm::perspective(glm::radians(45.f), (float)SCREEN_WIDTH/SCREEN_HEIGHT, 0.1f, 100.f); // fov, aspect ratio, near plane dist, far plan dist
+        int projLoc = glGetUniformLocation(shaderProgram.ID, "projection");
+        glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
 
-        // Get matrix's uniform location and set matrix
-        int transformLoc = glGetUniformLocation(shaderProgram.ID, "transform");
-        glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
-        
         // Drawing first container
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-
-        // Create second transformations
-        trans = glm::mat4(1.f);
-        trans = glm::translate(trans, glm::vec3(-0.5f, 0.5f, 0.f)); // move to top-left corner of screen
-        float se = glm::sin(glfwGetTime());
-        trans = glm::scale(trans, glm::vec3(se, se, se));
-
-        // Get matrix's uniform location and set matrix
-        glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
-
-        // Drawing second container
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
         glBindVertexArray(0);

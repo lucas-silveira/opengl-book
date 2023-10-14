@@ -44,7 +44,7 @@ int main(void)
     gladLoadGL(glfwGetProcAddress);
     glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
 
-    Shader shaderProgram("shader.vs", "shader.fs");
+    Shader shaderProgram("shader.vert", "shader.frag");
 
     float vertices[] = {
         // positions        // colors           // texture coords
