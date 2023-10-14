@@ -15,7 +15,7 @@ ifeq ($(detected_OS), Darwin)
     CXXFLAGS += -lglfw3 -framework Cocoa -framework IOKit
 endif
 
-build/app: main.cpp shader.vs shader.fs ../lib/gl.c
+build/app: main.cpp shader.vert shader.frag ../lib/gl.c
 	[ -d build ] || mkdir build
 	g++ main.cpp ../lib/gl.c -o build/app $(CPPFLAGS) $(CXXFLAGS)
 
