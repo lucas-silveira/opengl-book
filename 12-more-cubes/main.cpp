@@ -95,6 +95,18 @@ int main(void)
         -0.5f,  0.5f,  0.5f,  0.f,  0.f,
         -0.5f,  0.5f, -0.5f,  0.f,  1.0f
     };
+    glm::vec3 cubePositions[] = {
+        glm::vec3( 0.0f,  0.0f,   0.0f),
+        glm::vec3( 2.0f,  5.0f, -15.0f),
+        glm::vec3(-1.5f, -2.2f,  -2.5f),
+        glm::vec3(-3.8f, -2.0f, -12.3f),
+        glm::vec3( 2.4f, -0.4f,  -3.5f),
+        glm::vec3(-1.7f,  3.0f,  -7.5f),
+        glm::vec3( 1.3f, -2.0f,  -2.5f),
+        glm::vec3( 1.5f,  2.0f,  -2.5f),
+        glm::vec3( 1.5f,  0.2f,  -1.5f),
+        glm::vec3(-1.3f,  1.0f,  -1.5f)
+    };
 
     unsigned int VBO, VAO;
     glGenBuffers(1, &VBO);
@@ -177,21 +189,14 @@ int main(void)
 
         shaderProgram.use();
         /* Transformation matrices */
-        // Model matrix
-        glm::mat4 model = glm::mat4(1.f);
-        model = glm::rotate(model, (float)glfwGetTime()*glm::radians(50.f), glm::vec3(0.5f, 1.f, 0.f));
-        int modelLoc = glGetUniformLocation(shaderProgram.ID, "model");
-        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
         // View matrix
         glm::mat4 view = glm::mat4(1.f);
         view = glm::translate(view, glm::vec3(0.f, 0.f, -3.f)); // we translate the scene in the reverse direction
-        int viewLoc = glGetUniformLocation(shaderProgram.ID, "view");
-        glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
+        shaderProgram.setMat4("view", view);
         // Projection matrix
         glm::mat4 projection;
         projection = glm::perspective(glm::radians(45.f), (float)SCREEN_WIDTH/SCREEN_HEIGHT, 0.1f, 100.f);
-        int projLoc = glGetUniformLocation(shaderProgram.ID, "projection");
-        glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
+        shaderProgram.setMat4("projection", projection);
 
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, texture1);
@@ -200,7 +205,16 @@ int main(void)
 
         // Drawing
         glBindVertexArray(VAO);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
+        for (unsigned int i = 0; i < 10; i++)
+        {
+            // Model matrix
+            glm::mat4 model = glm::mat4(1.f);
+            model = glm::translate(model, cubePositions[i]);
+            float angle = 20.f * (i+1) * glfwGetTime();
+            model = glm::rotate(model, glm::radians(angle), glm::vec3(1.f, 0.3f, 0.5f));
+            shaderProgram.setMat4("model", model);
+            glDrawArrays(GL_TRIANGLES, 0, 36);
+        }
         glBindVertexArray(0);
 
         glfwSwapBuffers(window);
