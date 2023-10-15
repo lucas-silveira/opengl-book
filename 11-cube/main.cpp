@@ -189,7 +189,11 @@ int main(void)
         glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
         // Projection matrix
         glm::mat4 projection;
-        projection = glm::perspective(glm::radians(45.f), (float)SCREEN_WIDTH/SCREEN_HEIGHT, 0.1f, 100.f);
+        float fov = glm::radians(45.f);
+        float aspectRatio = (float)SCREEN_WIDTH/SCREEN_HEIGHT;
+        float nearPlane = 0.1f;
+        float farPlane = 100.f;
+        projection = glm::perspective(fov, aspectRatio, nearPlane, farPlane);
         int projLoc = glGetUniformLocation(shaderProgram.ID, "projection");
         glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
 
