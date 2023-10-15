@@ -51,72 +51,92 @@ int main(void)
     glEnable(GL_DEPTH_TEST);
     Shader shaderProgram("shader.vert", "shader.frag");
 
-    float vertices[] = {
-    -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-    0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
-    0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-    0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-    -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-    -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-    0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-    0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-    0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-    -0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
-    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-    -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-    -0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-    -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-    -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-    -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-    0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-    0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-    0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-    0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-    0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-    0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-    -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-    0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
-    0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-    0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-    -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-    -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-    0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-    0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-    0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-    -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
-    -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
+    // 6 faces * 2 triangles * 3 vertices = 36 points
+    float vertices[5*8*3] = {
+        // Back face
+        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f, // bottom left back
+         0.5f, -0.5f, -0.5f,  1.0f, 0.0f, // bottom right back
+         0.5f,  0.5f, -0.5f,  1.0f, 1.0f, // top right back
+        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f, // top left back
+        // Front face
+        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f, // bottom left front
+         0.5f, -0.5f,  0.5f,  1.0f, 0.0f, // bottom right front
+         0.5f,  0.5f,  0.5f,  1.0f, 1.0f, // top right front
+        -0.5f,  0.5f,  0.5f,  0.0f, 1.0f, // top left front
+        // Left face
+        -0.5f,  0.5f, -0.5f,  0.0f, 0.0f, // top left back
+        -0.5f, -0.5f, -0.5f,  1.0f, 0.0f, // bottom left back
+        -0.5f, -0.5f,  0.5f,  1.0f, 1.0f, // bottom left front
+        -0.5f,  0.5f,  0.5f,  0.0f, 1.0f, // top left front
+        // Right face
+         0.5f, -0.5f, -0.5f,  0.0f, 0.0f, // bottom right back
+         0.5f,  0.5f, -0.5f,  1.0f, 0.0f, // top right back
+         0.5f,  0.5f,  0.5f,  1.0f, 1.0f, // top right front
+         0.5f, -0.5f,  0.5f,  0.0f, 1.0f, // bottom right front
+        // Bottom face
+        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f, // bottom left back
+         0.5f, -0.5f, -0.5f,  1.0f, 0.0f, // bottom right back
+         0.5f, -0.5f,  0.5f,  1.0f, 1.0f, // bottom right front
+        -0.5f, -0.5f,  0.5f,  0.0f, 1.0f, // bottom left front
+        // Top face
+         0.5f,  0.5f, -0.5f,  0.0f, 0.0f, // top right back
+        -0.5f,  0.5f, -0.5f,  1.0f, 0.0f, // top left back
+        -0.5f,  0.5f,  0.5f,  1.0f, 1.0f, // top left front
+         0.5f,  0.5f,  0.5f,  0.0f, 1.0f, // top right front
+    };
+    unsigned int indices[3*4*3] = {
+        // Back face
+        0, 3, 2,
+        2, 1, 0,
+        // Front face
+        4, 5, 6,
+        6, 7 ,4,
+        // Left face
+        11, 8, 9,
+        9, 10, 11,
+        // Right face
+        12, 13, 14,
+        14, 15, 12,
+        // Bottom face
+        16, 17, 18,
+        18, 19, 16,
+        // Top face
+        20, 21, 22,
+        22, 23, 20
     };
     glm::vec3 cubePositions[] = {
-    glm::vec3( 0.0f,  0.0f,   0.0f),
-    glm::vec3( 2.0f,  5.0f, -15.0f),
-    glm::vec3(-1.5f, -2.2f,  -2.5f),
-    glm::vec3(-3.8f, -2.0f, -12.3f),
-    glm::vec3( 2.4f, -0.4f,  -3.5f),
-    glm::vec3(-1.7f,  3.0f,  -7.5f),
-    glm::vec3( 1.3f, -2.0f,  -2.5f),
-    glm::vec3( 1.5f,  2.0f,  -2.5f),
-    glm::vec3( 1.5f,  0.2f,  -1.5f),
-    glm::vec3(-1.3f,  1.0f,  -1.5f)
+        glm::vec3( 0.0f,  0.0f,   0.0f),
+        glm::vec3( 2.0f,  5.0f, -15.0f),
+        glm::vec3(-1.5f, -2.2f,  -2.5f),
+        glm::vec3(-3.8f, -2.0f, -12.3f),
+        glm::vec3( 2.4f, -0.4f,  -3.5f),
+        glm::vec3(-1.7f,  3.0f,  -7.5f),
+        glm::vec3( 1.3f, -2.0f,  -2.5f),
+        glm::vec3( 1.5f,  2.0f,  -2.5f),
+        glm::vec3( 1.5f,  0.2f,  -1.5f),
+        glm::vec3(-1.3f,  1.0f,  -1.5f)
     };
 
-    unsigned int VBO, VAO;
+    unsigned int VBO, EBO, VAO;
     glGenBuffers(1, &VBO);
+    glGenBuffers(1, &EBO);
     glGenVertexArrays(1, &VAO);
 
     glBindVertexArray(VAO);
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
     // position attribute
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5*sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
     // texture coord attribute
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5*sizeof(float), (void*)(3*sizeof(float)));
     glEnableVertexAttribArray(1);
+
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindVertexArray(0);
 
     // Texture 1
     unsigned int texture1;
@@ -188,9 +208,14 @@ int main(void)
         view = glm::translate(view, glm::vec3(0.f, 0.f, -3.f)); // we translate the scene in the reverse direction
         shaderProgram.setMat4("view", view);
         // Projection matrix
-        glm::mat4 projection;
-        projection = glm::perspective(glm::radians(45.f), (float)SCREEN_WIDTH/SCREEN_HEIGHT, 0.1f, 100.f);
-        shaderProgram.setMat4("projection", projection);
+         glm::mat4 projection;
+        float fov = glm::radians(45.f);
+        float aspectRatio = (float)SCREEN_WIDTH/SCREEN_HEIGHT;
+        float nearPlane = 0.1f;
+        float farPlane = 100.f;
+        projection = glm::perspective(fov, aspectRatio, nearPlane, farPlane);
+        int projLoc = glGetUniformLocation(shaderProgram.ID, "projection");
+        glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
 
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, texture1);
@@ -207,7 +232,7 @@ int main(void)
             float angle = 20.f * (i+1) * glfwGetTime();
             model = glm::rotate(model, glm::radians(angle), glm::vec3(1.f, 0.3f, 0.5f));
             shaderProgram.setMat4("model", model);
-            glDrawArrays(GL_TRIANGLES, 0, 36);
+            glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
         }
         glBindVertexArray(0);
 
@@ -217,8 +242,6 @@ int main(void)
 
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
-    shaderProgram.remove();
-
+    glDeleteBuffers(1, &EBO);
     glfwTerminate();
-    return 0;
 }

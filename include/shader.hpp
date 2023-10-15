@@ -88,6 +88,8 @@ class Shader
       }
 
       // Delete shaders (it's already linked to the program)
+      glDetachShader(ID, vertex);
+      glDetachShader(ID, fragment);
       glDeleteShader(vertex);
       glDeleteShader(fragment);
     }
