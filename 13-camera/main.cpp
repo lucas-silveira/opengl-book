@@ -204,8 +204,10 @@ int main(void)
         shaderProgram.use();
         /* Transformation matrices */
         // View matrix
-        glm::mat4 view = glm::mat4(1.f);
-        view = glm::translate(view, glm::vec3(0.f, 0.f, -3.f)); // we translate the scene in the reverse direction
+        float radius = 10.f;
+        float camX = std::sin(glfwGetTime()) * radius;
+        float camZ = std::cos(glfwGetTime()) * radius;
+        glm::mat4 view = glm::lookAt(glm::vec3(camX, 0.f, camZ), glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 1.f, 0.f));
         shaderProgram.setMat4("view", view);
         // Projection matrix
          glm::mat4 projection;
@@ -228,7 +230,7 @@ int main(void)
             // Model matrix
             glm::mat4 model = glm::mat4(1.f);
             model = glm::translate(model, cubePositions[i]);
-            float angle = 20.f * (i+1) * glfwGetTime();
+            float angle = 20.f * i;
             model = glm::rotate(model, glm::radians(angle), glm::vec3(1.f, 0.3f, 0.5f));
             shaderProgram.setMat4("model", model);
             glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
