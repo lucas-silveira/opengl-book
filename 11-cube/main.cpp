@@ -51,7 +51,6 @@ int main(void)
     glEnable(GL_DEPTH_TEST);
     Shader shaderProgram("shader.vert", "shader.frag");
 
-    // 6 faces * 2 triangles * 3 vertices = 36 points
     float vertices[] = {
         -0.5f, -0.5f, -0.5f,  0.f,  0.f,
          0.5f, -0.5f, -0.5f,  1.0f, 0.f,
