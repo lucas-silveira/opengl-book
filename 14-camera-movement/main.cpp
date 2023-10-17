@@ -3,7 +3,6 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include <iostream>
 #define STB_IMAGE_IMPLEMENTATION
 #include "../include/stb_image.h"
 #include "../include/shader.hpp"
@@ -34,7 +33,6 @@ void framebufferSizeCallback(GLFWwindow* window, int width, int height)
 
 void mouseCallback(GLFWwindow* window, double xpos, double ypos)
 {
-    std::cout << xpos << " " << ypos << std::endl;
     // Avoid camera jump to the mouse position from the center
     if (firstMouse)
     {
