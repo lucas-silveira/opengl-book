@@ -7,7 +7,7 @@ else
 endif
 
 ifeq ($(detected_OS), Linux)
-    CXXFLAGS += -lglfw3 
+    CXXFLAGS += -lglfw3
 endif
 
 # Mac OS X
