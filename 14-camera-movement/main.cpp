@@ -271,16 +271,16 @@ int main(void)
 
         shaderProgram.use();
         /* Transformation matrices */
-        // View matrix
-        glm::mat4 view = glm::lookAt(cameraPos, cameraPos+cameraFront, cameraUp);
-        shaderProgram.setMat4("view", view);
-        // Projection matrix
-         glm::mat4 projection;
+        // Projection transformation
+        glm::mat4 projection;
         float aspectRatio = (float)SCREEN_WIDTH/SCREEN_HEIGHT;
         float nearPlane = 0.1f;
         float farPlane = 100.f;
         projection = glm::perspective(glm::radians(fov), aspectRatio, nearPlane, farPlane);
         shaderProgram.setMat4("projection", projection);
+        // View transformation
+        glm::mat4 view = glm::lookAt(cameraPos, cameraPos+cameraFront, cameraUp);
+        shaderProgram.setMat4("view", view);
 
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, texture1);
@@ -291,7 +291,7 @@ int main(void)
         glBindVertexArray(VAO);
         for (unsigned int i = 0; i < 10; i++)
         {
-            // Model matrix
+            // World transformation
             glm::mat4 model = glm::mat4(1.f);
             model = glm::translate(model, cubePositions[i]);
             float angle = 20.f * i;

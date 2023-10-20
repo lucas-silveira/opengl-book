@@ -176,17 +176,17 @@ int main(void)
 
         shaderProgram.use();
         /* Transformation matrices */
-        // Model matrix
+        // World transformation
         glm::mat4 model = glm::mat4(1.f);
         model = glm::rotate(model, (float)glfwGetTime()*glm::radians(50.f), glm::vec3(0.5f, 1.f, 0.f));
         int modelLoc = glGetUniformLocation(shaderProgram.ID, "model");
         glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-        // View matrix
+        // View transformation
         glm::mat4 view = glm::mat4(1.f);
         view = glm::translate(view, glm::vec3(0.f, 0.f, -3.f)); // we translate the scene in the reverse direction
         int viewLoc = glGetUniformLocation(shaderProgram.ID, "view");
         glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
-        // Projection matrix
+        // Projection transformation
         glm::mat4 projection;
         float fov = glm::radians(45.f);
         float aspectRatio = (float)SCREEN_WIDTH/SCREEN_HEIGHT;

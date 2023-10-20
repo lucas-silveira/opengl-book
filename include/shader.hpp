@@ -2,6 +2,7 @@
 #define SHADER_H
 
 #include <glad/gl.h>
+#include <glm/glm.hpp>
 #include <string>
 #include <fstream>
 #include <sstream>
@@ -122,7 +123,12 @@ class Shader
       glUniform1f(glGetUniformLocation(ID, name.c_str()), value);
     }
 
-    void setVec4(const std::string &name, float x, float y, float z, float w)
+    void setVec3(const std::string &name, float x, float y, float z) const
+    { 
+        glUniform3f(glGetUniformLocation(ID, name.c_str()), x, y, z); 
+    }
+
+    void setVec4(const std::string &name, float x, float y, float z, float w) const
     {
         glUniform4f(glGetUniformLocation(ID, name.c_str()), x, y, z, w);
     }

@@ -202,20 +202,20 @@ int main(void)
 
         shaderProgram.use();
         /* Transformation matrices */
-        // View matrix
-        float radius = 10.f;
-        float camX = std::sin(glfwGetTime()) * radius;
-        float camZ = std::cos(glfwGetTime()) * radius;
-        glm::mat4 view = glm::lookAt(glm::vec3(camX, 0.f, camZ), glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 1.f, 0.f));
-        shaderProgram.setMat4("view", view);
-        // Projection matrix
-         glm::mat4 projection;
+        // Projection transformation
+        glm::mat4 projection;
         float fov = glm::radians(45.f);
         float aspectRatio = (float)SCREEN_WIDTH/SCREEN_HEIGHT;
         float nearPlane = 0.1f;
         float farPlane = 100.f;
         projection = glm::perspective(fov, aspectRatio, nearPlane, farPlane);
         shaderProgram.setMat4("projection", projection);
+        // View transformation
+        float radius = 10.f;
+        float camX = std::sin(glfwGetTime()) * radius;
+        float camZ = std::cos(glfwGetTime()) * radius;
+        glm::mat4 view = glm::lookAt(glm::vec3(camX, 0.f, camZ), glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 1.f, 0.f));
+        shaderProgram.setMat4("view", view);
 
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, texture1);
@@ -226,7 +226,7 @@ int main(void)
         glBindVertexArray(VAO);
         for (unsigned int i = 0; i < 10; i++)
         {
-            // Model matrix
+            // World transformation
             glm::mat4 model = glm::mat4(1.f);
             model = glm::translate(model, cubePositions[i]);
             float angle = 20.f * i;
