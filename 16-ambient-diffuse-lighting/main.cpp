@@ -102,48 +102,49 @@ int main(void)
     Shader lightingCubeShader("light-cube.vert", "light-cube.frag");
 
     float vertices[] = {
+        // Positions          // Normals
         // Back
-        -0.5f, -0.5f, -0.5f,
-         0.5f, -0.5f, -0.5f,
-         0.5f,  0.5f, -0.5f,
-         0.5f,  0.5f, -0.5f,
-        -0.5f,  0.5f, -0.5f,
-        -0.5f, -0.5f, -0.5f,
+        -0.5f, -0.5f, -0.5f,  0.f,  0.f, -1.f,
+         0.5f, -0.5f, -0.5f,  0.f,  0.f, -1.f,
+         0.5f,  0.5f, -0.5f,  0.f,  0.f, -1.f,
+         0.5f,  0.5f, -0.5f,  0.f,  0.f, -1.f,
+        -0.5f,  0.5f, -0.5f,  0.f,  0.f, -1.f,
+        -0.5f, -0.5f, -0.5f,  0.f,  0.f, -1.f,
         // Front
-        -0.5f, -0.5f,  0.5f,
-         0.5f, -0.5f,  0.5f,
-         0.5f,  0.5f,  0.5f,
-         0.5f,  0.5f,  0.5f,
-        -0.5f,  0.5f,  0.5f,
-        -0.5f, -0.5f,  0.5f,
+        -0.5f, -0.5f,  0.5f,  0.f,  0.f,  1.f,
+         0.5f, -0.5f,  0.5f,  0.f,  0.f,  1.f,
+         0.5f,  0.5f,  0.5f,  0.f,  0.f,  1.f,
+         0.5f,  0.5f,  0.5f,  0.f,  0.f,  1.f,
+        -0.5f,  0.5f,  0.5f,  0.f,  0.f,  1.f,
+        -0.5f, -0.5f,  0.5f,  0.f,  0.f,  1.f,
         // Left
-        -0.5f,  0.5f,  0.5f,
-        -0.5f,  0.5f, -0.5f,
-        -0.5f, -0.5f, -0.5f,
-        -0.5f, -0.5f, -0.5f,
-        -0.5f, -0.5f,  0.5f,
-        -0.5f,  0.5f,  0.5f,
+        -0.5f,  0.5f,  0.5f, -1.f,  0.f,  0.f,
+        -0.5f,  0.5f, -0.5f, -1.f,  0.f,  0.f,
+        -0.5f, -0.5f, -0.5f, -1.f,  0.f,  0.f,
+        -0.5f, -0.5f, -0.5f, -1.f,  0.f,  0.f,
+        -0.5f, -0.5f,  0.5f, -1.f,  0.f,  0.f,
+        -0.5f,  0.5f,  0.5f, -1.f,  0.f,  0.f,
         // Right
-         0.5f,  0.5f,  0.5f,
-         0.5f,  0.5f, -0.5f,
-         0.5f, -0.5f, -0.5f,
-         0.5f, -0.5f, -0.5f,
-         0.5f, -0.5f,  0.5f,
-         0.5f,  0.5f,  0.5f,
+         0.5f,  0.5f,  0.5f,  1.f,  0.f,  0.f,
+         0.5f,  0.5f, -0.5f,  1.f,  0.f,  0.f,
+         0.5f, -0.5f, -0.5f,  1.f,  0.f,  0.f,
+         0.5f, -0.5f, -0.5f,  1.f,  0.f,  0.f,
+         0.5f, -0.5f,  0.5f,  1.f,  0.f,  0.f,
+         0.5f,  0.5f,  0.5f,  1.f,  0.f,  0.f,
         // Bottom
-        -0.5f, -0.5f, -0.5f,
-         0.5f, -0.5f, -0.5f,
-         0.5f, -0.5f,  0.5f,
-         0.5f, -0.5f,  0.5f,
-        -0.5f, -0.5f,  0.5f,
-        -0.5f, -0.5f, -0.5f,
+        -0.5f, -0.5f, -0.5f,  0.f, -1.f,  0.f,
+         0.5f, -0.5f, -0.5f,  0.f, -1.f,  0.f,
+         0.5f, -0.5f,  0.5f,  0.f, -1.f,  0.f,
+         0.5f, -0.5f,  0.5f,  0.f, -1.f,  0.f,
+        -0.5f, -0.5f,  0.5f,  0.f, -1.f,  0.f,
+        -0.5f, -0.5f, -0.5f,  0.f, -1.f,  0.f,
         // Top
-        -0.5f,  0.5f, -0.5f,
-         0.5f,  0.5f, -0.5f,
-         0.5f,  0.5f,  0.5f,
-         0.5f,  0.5f,  0.5f,
-        -0.5f,  0.5f,  0.5f,
-        -0.5f,  0.5f, -0.5f,
+        -0.5f,  0.5f, -0.5f,  0.f,  1.f,  0.f,
+         0.5f,  0.5f, -0.5f,  0.f,  1.f,  0.f,
+         0.5f,  0.5f,  0.5f,  0.f,  1.f,  0.f,
+         0.5f,  0.5f,  0.5f,  0.f,  1.f,  0.f,
+        -0.5f,  0.5f,  0.5f,  0.f,  1.f,  0.f,
+        -0.5f,  0.5f, -0.5f,  0.f,  1.f,  0.f,
     };
     // Cube
     unsigned int VBO, cubeVAO;
@@ -155,8 +156,11 @@ int main(void)
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
     // position attribute
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3*sizeof(float), (void*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6*sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
+    // normal attribute
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6*sizeof(float), (void*)(3*sizeof(float)));
+    glEnableVertexAttribArray(1);
 
     // Light source cube (we only create this object in order to visualize the position of the source light)
     unsigned int lightVAO;
@@ -164,11 +168,14 @@ int main(void)
     glBindVertexArray(lightVAO);
     // Use can use the existing VBO since the cube vertices is the same
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3*sizeof(float), (void*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6*sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
+
+    lightingShader.use();
+    lightingShader.setVec3("lightPos", lightPos.x, lightPos.y, lightPos.z);
 
     // Uncomment this call to draw in wireframe polygons.
     // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
