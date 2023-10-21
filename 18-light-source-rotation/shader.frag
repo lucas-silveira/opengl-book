@@ -12,8 +12,8 @@ uniform vec3 viewPos; // if we'd calculate the light from the view+model coordin
 
 void main()
 {
-  float ambienteStrength = 0.1;
-  vec3 ambientLight = ambienteStrength * lightColor;
+  float ambientStrength = 0.1;
+  vec3 ambientLight = ambientStrength * lightColor;
   
   vec3 lightDir = normalize(lightPos - fragPos);
   vec3 norm = normalize(normal);
