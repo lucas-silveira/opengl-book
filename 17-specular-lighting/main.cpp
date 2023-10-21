@@ -195,6 +195,7 @@ int main(void)
         lightingShader.use();
         lightingShader.setVec3("objColor", 1.f, 0.5f, 0.31f);
         lightingShader.setVec3("lightColor", 1.f, 1.f, 1.f);
+        lightingShader.setVec3("viewPos", camera.Position);
 
         // Projection transformation
         glm::mat4 projection;
@@ -209,6 +210,9 @@ int main(void)
         // Model transformation
         glm::mat4 model = glm::mat4(1.f);
         lightingShader.setMat4("model", model);
+        // Normal matrix
+        glm::mat4 normalMatrix = glm::transpose(glm::inverse(model)); // inversing matrices is an expensive operation for shaders, so it's better to do it once from CPU and send it as an uniform
+        lightingShader.setMat4("normalMatrix", normalMatrix);
         // Drawing object
         glBindVertexArray(cubeVAO);
         glDrawArrays(GL_TRIANGLES, 0, 36);
