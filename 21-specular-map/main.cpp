@@ -201,8 +201,33 @@ int main(void)
     }
     stbi_image_free(data);
 
+    // Texture 2
+    unsigned int specular_map;
+    glGenTextures(1, &specular_map);
+    glBindTexture(GL_TEXTURE_2D, specular_map);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+
+    data = stbi_load("../assets/container_specular.png", &width, &height, &nrChannels, 0);
+
+    if (data)
+    {
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+    }
+    else
+    {
+        std::cout << "Failed to load texture" << std::endl;
+    }
+    stbi_image_free(data);
+
     lightingShader.use();
     lightingShader.setInt("material.diffuse", 0);
+    lightingShader.setInt("material.specular", 1);
 
     // Uncomment this call to draw in wireframe polygons.
     // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -231,9 +256,6 @@ int main(void)
         lightingShader.setVec3("light.specular", 1.f, 1.f, 1.f);
         // Material
         // Each struct member needs to be individually set. The struct name act as a namespace
-        lightingShader.setVec3("material.ambient", 1.f, .5f, .31f); // Both ambient and diffuse lights receive the object color
-        lightingShader.setVec3("material.diffuse", 1.f, .5f, .31f);
-        lightingShader.setVec3("material.specular", .5f, .5f, .5f); // Specular receives a medium white color
         lightingShader.setFloat("material.shininess", 32.f);
 
         // Projection transformation
@@ -256,6 +278,9 @@ int main(void)
         // bind diffuse map
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, diffuse_map);
+        // bind specular map
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, specular_map);
 
         // Drawing object
         glBindVertexArray(cubeVAO);
