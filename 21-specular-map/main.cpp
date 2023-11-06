@@ -1,10 +1,15 @@
+#ifdef __MINGW32__
+    #define GLFW_DLL
+#endif
+
 #include <glad/gl.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #define STB_IMAGE_IMPLEMENTATION
-#include "../include/stb_image.h"
+#include <stb/stb_image.h>
+
 #include "../include/shader.hpp"
 #include "../include/camera.hpp"
 

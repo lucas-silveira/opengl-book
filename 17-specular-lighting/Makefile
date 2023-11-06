@@ -1,25 +1,35 @@
-CPPFLAGS = -ldl -Wall
+CPPFLAGS = -Wall
 
 ifeq ($(OS),Windows_NT) 
-    detected_OS := Windows
+    DETECTED_OS := Windows
 else
-    detected_OS := $(shell sh -c 'uname 2>/dev/null || echo Unknown')
+    DETECTED_OS := $(shell sh -c 'uname 2>/dev/null || echo Unknown')
 endif
 
-ifeq ($(detected_OS), Linux)
-    CXXFLAGS += -lglfw3
+ifeq ($(DETECTED_OS), Windows)
+    make_build := if not exist "build" mkdir build
+    remove_build := rmdir /s /q build
+    CXXFLAGS += -lglfw3dll -lopengl32
+endif
+
+ifeq ($(DETECTED_OS), Linux)
+    make_build := [ -d build ] || mkdir build
+    remove_build := rm -rf build
+    CXXFLAGS += -ldl -lglfw3
 endif
 
 # Mac OS X
-ifeq ($(detected_OS), Darwin)
-    CXXFLAGS += -lglfw3 -framework Cocoa -framework IOKit
+ifeq ($(DETECTED_OS), Darwin)
+    make_build := [ -d build ] || mkdir build
+    remove_build := rm -rf build
+    CXXFLAGS += -ldl -lglfw3 -framework Cocoa -framework IOKit
 endif
 
 all: build/app
 
 build/app: main.cpp shader.vert shader.frag light-cube.vert light-cube.frag ../lib/gl.c
-	[ -d build ] || mkdir build
+	$(make_build)
 	g++ main.cpp ../lib/gl.c -o build/app $(CPPFLAGS) $(CXXFLAGS)
 
 clean:
-	rm -rf build
+	$(remove_build)
